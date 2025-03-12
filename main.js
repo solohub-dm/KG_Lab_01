@@ -1,7 +1,8 @@
 const getElement = document.querySelector.bind(document);
 
-
+//
 // Елементи форми 
+//
 const trName  = getElement("#trapezium-name");
 
 const trColorsCbx = [
@@ -13,6 +14,14 @@ trColorsCbx.forEach(input => {
         checkColors(input);
     });
 });
+function checkColors(input) {
+    if (
+        trColorsCbx[0].checked === false &&
+        trColorsCbx[1].checked === false
+    ) {
+        input.checked = true;
+    }
+}
 
 const trColors = [
     getElement("#color-fill"),
@@ -34,35 +43,18 @@ trCoords.forEach(input => {
 const trHeightLen  = getElement("#height-lenght");
 const trSmallBasisLen  = getElement("#smaller-basis-lenght");
 
-function checkColors(input) {
-    if (
-        trColorsCbx[0].checked === false &&
-        trColorsCbx[1].checked === false
-    ) {
-        input.checked = true;
-    }
-}
 
-let lStartPoint; 
-let lEndPoint; 
-let len;
 
-let sqStartPoint;
-let sqEndPoint;
+//  Змінні для збереження поточних параметрів трапеції
+let lStartPoint, lEndPoint, len;        // Точки великої основи
+let sqStartPoint, sqEndPoint;               // Точки верхньої основи
+let sStartPoint, sEndPoint;                 // Точки меншої основи
+let vecH, vecV;                             // Горизонтальний і вертикальний вектори
+let h1Point, h2Point;                       // Точки висот
+let heightLen, smallerLenMax, smallerLen;   // Довжини висоти та меншої основи
 
-let sStartPoint;
-let sEndPoint;
 
-let vecH;
-let vecV;
-
-let h1Point;
-let h2Point;
-
-let heightLen;
-let smallerLenMax;
-let smallerLen;
-
+// Функція відображення повідомлення про помилку
 function showErrorMessage(errorMessage, input) {
     console.log(errorMessage);
     canvasPreview.style.display = "none";
@@ -73,7 +65,7 @@ function showErrorMessage(errorMessage, input) {
         input.style.backgroundColor = "rgb(239, 117, 117)";
     }
 }
-
+// Функція для приховування повідомлення про помилку, якщо всі перевірки пройдено
 function tryHideErrorMessage() {
     if (!isErrorCoords && !isErrorHeight && !isErrorBasisLen) {
         canvasPreview.style.display = "block";
@@ -82,9 +74,10 @@ function tryHideErrorMessage() {
 }
 
 
+// Змінні для контролю правильності введених координат
 let isCorrectCoords = false;
 let isErrorCoords = false;
-
+// Функція перевірки правильності усіх координат
 function checkCoords(input) {
     isCorrectCoords = false;
 
@@ -115,6 +108,7 @@ function checkCoords(input) {
     return isCorrectCoords;
 }
 
+// Функція перевірки коректності введених значень координати
 function checkCoordInput(input) {
     let inputValue = input.value;
     input.style.backgroundColor = "white";
@@ -128,12 +122,14 @@ function checkCoordInput(input) {
     }
 }
 
+// Перевіряє, чи є серед координат хоча б одне порожнє поле
 function isSomeCoordEmpty() {   
     const hasEmptyValue = trCoords.some(input => input.value.trim() === "");
     return hasEmptyValue;
 }
 
 
+// Змінні для контролю правильності введеної висоти
 let isCorrectHeight = false;
 let isErrorHeight = false;
 // Відстеження змін довжини висоти
@@ -208,6 +204,8 @@ function checkHeight() {
     return isCorrectHeight;
 }
 
+// Функція обчислення максимально можливої довжини меншої висоти 
+// за даних значень координат та висоти
 function calcSmallerLenMax(p1, p2) {
     let x1 = p1.x, y1 = p1.y;
     let x2 = p2.x, y2 = p2.y;
@@ -265,6 +263,7 @@ function calcSmallerLenMax(p1, p2) {
     return lenMax;
 }
 
+// Змінні для контролю правильності введеної довжини меншої основи
 let isCorrectBasisLen = false;
 let isErrorBasisLen = false;
 // Відстеження змін довжини меншої основи
@@ -325,7 +324,7 @@ function checkSmaller() {
     }
 }
 
-
+// Клас для представлення точки на координатній площині
 class Point {
     constructor(x, y) {
         this.x = x;
@@ -339,6 +338,8 @@ class Point {
     }
 }
 
+
+// Клас для збереження параметрів трапеції
 class Trapezium {
     constructor(
         lStartPoint, 
@@ -374,6 +375,10 @@ class Trapezium {
     }
 }
 
+
+//
+//  Елементи інтерфейсу
+//
 const errorPanel  = getElement("#error-panel");
 const errorText  = getElement("#text-error");
 
@@ -396,9 +401,9 @@ const propertiesCreateBtn  = getElement("#control-header-create");
 
 let isLayersMode = false;
 
-windowBtn.addEventListener("click", changeWindow);
-propertiesClearBtn.addEventListener("click", clearForm);
 
+// Функція очищення форми
+propertiesClearBtn.addEventListener("click", clearForm);
 function clearForm() {
     propertiesForm.reset();
     const textInputs = document.querySelectorAll('input[type="text"], input[type="number"]');
@@ -411,12 +416,16 @@ function clearForm() {
     errorPanel.style.display = "none";
 }
 
+// Масив для збереження даних створених трапецій
 let trapeziums = [];
+
+// Функція для отримання унікального id
 let globalId = 0;
 function getNewId() {
     return ++globalId;
 }
 
+// Функція створення трапеції із заданими параметрами
 propertiesCreateBtn.addEventListener("click", createTrapezium);
 function createTrapezium() {
     if (isCorrectCoords && isCorrectHeight && isCorrectBasisLen) {
@@ -441,10 +450,12 @@ function createTrapezium() {
     
 }
 
+// Функція переведення у координати канваса
 function cX(value) {
     return midl + value * step; 
 }
 
+// Функція для малювання трапеції на канвасі
 function draw(tr) {
     ctx.fillStyle = tr.colorFill; 
     ctx.strokeStyle = tr.colorLine; 
@@ -466,6 +477,7 @@ function draw(tr) {
     drawHSq(tr, tr.h2Point, true);
 }
 
+// Функція для малювання висоти трапеції на канвасі
 function drawH(tr, bPoint, hPoint) {
     ctx.strokeStyle = tr.colorLine; 
     ctx.lineWidth = 2;
@@ -476,7 +488,7 @@ function drawH(tr, bPoint, hPoint) {
     ctx.stroke();
 }
 
-
+// Функція для малювання позначення висоти трапеції на канвасі (квадратик)
 function drawHSq(tr, hPoint, isRev) {
     let iR = isRev ? -1 : 1;
     ctx.strokeStyle = tr.colorLine; 
@@ -499,30 +511,13 @@ function drawHSq(tr, hPoint, isRev) {
     ctx.stroke();
 }
 
-function changeDisplay(item) {
-    let currentDisplay = getComputedStyle(item).display;
-    item.style.display = (currentDisplay === "none") ? "flex" : "none";
-}
-
-function changeWindow() {
-    if (isLayersMode)
-        windowBtnText.textContent = "Show layers menu";
-    else
-        windowBtnText.textContent = "Create trapezium";
-    
-    changeDisplay(windowBtnIconAdd);
-    changeDisplay(windowBtnIconList);
-    changeDisplay(propertiesWindow);
-    changeDisplay(layersWindow);
-
-    isLayersMode = !isLayersMode;
-}
-
+// Змінні для налаштування декартової системи на канвасі
 let divsCnt;
 let midl;
 let step;
 const ctx = canvasMain?.getContext("2d");
 
+// Функція завантаження при відкритті сторінки
 window.addEventListener("load", () => {
     drawSystem();
     trName.value = "Trapezium";
@@ -540,6 +535,7 @@ canvasMainStep.addEventListener('keydown', function(event) {
     }
 });
 
+// Функція малювання координатної системи
 function drawSystem() {
     canvasMain.width = 500;
     canvasMain.height = 500;
@@ -559,6 +555,7 @@ function drawSystem() {
     step = Math.floor(size / divs / 2);
     const offs = Math.floor((size / 2) % step);
 
+    // Розмірна сітка
     ctx.strokeStyle = "rgb(196, 199, 206)";
     ctx.lineWidth = 1;
 
@@ -576,6 +573,7 @@ function drawSystem() {
         }
     }
     
+    // Осі координат
     ctx.strokeStyle = "rgb(33, 33, 33)";
     ctx.lineWidth = 1;
 
@@ -590,6 +588,7 @@ function drawSystem() {
     ctx.lineTo(size - step - offs, midl);
     ctx.stroke();
 
+    // Одиничні поділки на осях
     let markLen;
     if (value <= 20) 
         markLen = Math.floor(step / 5);
@@ -615,7 +614,9 @@ function drawSystem() {
             ctx.stroke();
         }   
     }
+    
 
+    // Точка на перетині осей
     ctx.beginPath();
     if (value <= 20) 
         ctx.arc(midl, midl, markLen / Math.sqrt(2), 0, Math.PI * 2);
@@ -624,6 +625,7 @@ function drawSystem() {
 
     ctx.fill();
 
+    // Стрілки осей
     ctx.lineWidth = 1.5;
     let shrt;
     let long;
@@ -650,6 +652,8 @@ function drawSystem() {
     ctx.lineTo(size - step - offs - long, midl + shrt);
     ctx.stroke();   
 
+
+    // Підпис поділок додатнії осей
     ctx.textAlign = "center";
     ctx.font = "16px Arial";
 
@@ -686,4 +690,26 @@ function drawSystem() {
         ctx.textAlign = "right";
         ctx.fillText(0, midl - 2 - markLen, midl + 13);
     }
+}
+
+// Зміна параметра відображення для елемента  
+function changeDisplay(item) {
+    let currentDisplay = getComputedStyle(item).display;
+    item.style.display = (currentDisplay === "none") ? "flex" : "none";
+}
+
+// Зміна вікна програми
+windowBtn.addEventListener("click", changeWindow);
+function changeWindow() {
+    if (isLayersMode)
+        windowBtnText.textContent = "Show layers menu";
+    else
+        windowBtnText.textContent = "Create trapezium";
+    
+    changeDisplay(windowBtnIconAdd);
+    changeDisplay(windowBtnIconList);
+    changeDisplay(propertiesWindow);
+    changeDisplay(layersWindow);
+
+    isLayersMode = !isLayersMode;
 }
