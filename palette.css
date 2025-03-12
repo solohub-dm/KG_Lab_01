@@ -1,0 +1,15 @@
+:root {
+	--transperent: rgba(0, 0, 0, 0);
+	--shadow:  #20222bcb;
+
+	--white-normal: rgb(224, 226, 227);
+	--white-accent: white;
+
+
+    --darkblue-bright: rgb(75, 79, 89);
+	--darkblue-normal: #33363F;
+    --darkblue-accent: #252830;
+
+	--font-decorative:  Cambria, Cochin, Georgia, serif;
+	--font-informative: 'Arial Narrow', Arial, sans-serif;
+}

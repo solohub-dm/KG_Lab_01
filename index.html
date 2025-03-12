@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trapezium</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="control-panel">
+            <div class="control-button" id="control-button-window">
+                <p class="text-button" id="text-button-window">Open layers menu</p>
+                <img src="./img/add.png" alt="add trapezium" class="icon-button" id="icon-add-item">
+                <img src="./img/list.png" alt="items list" class="icon-button" id="icon-list-item">
+            </div>
+            <div class="control-main" id="control-main-layers">
+                <div class="layers-panel">
+                    <div class="trapezium-item">
+                        <div class="trapezium-control-display">
+                            <img src="./img/up.png" alt="move up" class="icon-show-button arrow">
+                            <img src="./img/show.png" alt="show/hide" class="icon-show-button">
+                            <img src="./img/down.png" alt="move down" class="icon-show-button arrow"> 
+                        </div>
+                        <p class="text-trapezium-name">Trapezium_01</p>
+                        <div class="trapezium-control-display">
+                            <img src="./img/delete.png" alt="delete trapezium" class="icon-show-button">
+                        </div>
+                    </div>
+                    <div class="trapezium-item">
+                        <div class="trapezium-control-display">
+                            <img src="./img/up.png" alt="move up" class="icon-show-button arrow">
+                            <img src="./img/show.png" alt="show/hide" class="icon-show-button">
+                            <img src="./img/down.png" alt="move down" class="icon-show-button arrow"> 
+                        </div>
+                        <p class="text-trapezium-name">Trapezium_02</p>
+                        <div class="trapezium-control-display">
+                            <img src="./img/delete.png" alt="delete trapezium" class="icon-show-button">
+                        </div>
+                    </div>
+                </div>
+                <div class="control-button" id="control-delete-layers">
+                    <p class="text-button">Delete all</p>
+                    <img src="./img/delete.png" alt="delete all trapeziums" class="icon-button">
+                </div>
+            </div>
+
+            <div class="control-main" id="control-main-properties">
+<!-- 
+                <div class="control-button rev" id="control-header-cancel">
+                    <p class="text-button">Clear form</p>
+                    <img src="./img/clear.png" alt="clear properties" class="icon-button">
+                </div>
+                <hr> -->
+
+
+                <div class="properties-panel">
+                    <form id="form-properties">
+                        <fieldset id="fieldset-student">
+                            <div class="form-name-item">
+                              <label class="text-section-name" for="trapezium-name">Name:   </label>
+                              <input type="text" id="trapezium-name" name="trapezium-name" autocomplete="off">
+                            </div>
+                            <br>
+                            <p class="text-section-name">Color pallete:</p>
+                            <hr>
+                            <div class="form-item-color">       
+                                <div class="form-group">
+                                    <label><input type="checkbox" id="checkbox-fill" checked>Fill:</label>
+                                    <input type="color" id="color-fill">
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="checkbox" id="checkbox-line" checked>Line:</label>
+                                    <input type="color" id="color-line">
+                                </div>
+
+                            </div>
+                            <br>
+                            <p class="text-section-name">Larger basis vector:</p>
+                            <hr>
+                            <div class="form-item">
+                                <label>Start point:</label>
+                                <div class="form-group">
+                                    <label for="coord-x1">X:</label>
+                                    <input type="number" id="coord-x1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="coord-y1">Y:</label>
+                                    <input type="number" id="coord-y1">
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label>End point:</label>
+                                <div class="form-group">
+                                    <label for="coord-x2">X:</label>
+                                    <input type="number" id="coord-x2">
+                                </div>
+                                <div class="form-group">
+                                    <label for="coord-y2">Y:</label>
+                                    <input type="number" id="coord-y2">
+                                </div>
+                            </div>
+                            <br>
+                            <p class="text-section-name">Lengths of other dimensions:</p>
+                            <hr>    
+                            <div class="form-item">
+                                <label for="height-lenght">Lenght of height:</label>
+                                <input type="number" id="height-lenght">
+                            </div>
+                            <div class="form-item">
+                                <label for="smaller-basis-lenght">Lenght of smaller basis:</label>
+                                <input type="number" id="smaller-basis-lenght">
+                            </div>
+                          </fieldset>
+                    </form>
+                    <!-- <div class="canvas-prewiev-panel"> -->
+                        <div class="error-panel" id="error-panel">
+                            <p class="text-error" id="text-error">Error text</p>
+                        </div>
+                        <canvas class="canvas-preview" id="canvas-preview">
+                    
+                        </canvas>
+                    <!-- </div> -->
+                </div>
+                
+                <hr class="asd">
+                <div class="control-button rev" id="control-header-cancel">
+                    <p class="text-button">Clear form</p>
+                    <img src="./img/clear.png" alt="clear properties" class="icon-button">
+                </div>
+                <div class="control-button" id="control-header-create">
+                    <p class="text-button">Create figure</p>
+                    <img src="./img/add.png" alt="create trapeziums" class="icon-button">
+                </div>  
+            </div>
+        </div>
+        <div class="canvas-panel">
+            <canvas class="canvas-main" id="canvas-main">
+
+            </canvas>
+            <div class="floating-div">
+                <label for="step-lenght" class="text-section-name">Divs:</label>
+                <input type="number" id="step-lenght" value="10">
+            </div> 
+        </div>
+    </div>
+</body>
+
+<script src="./main.js"></script>
+</html>
