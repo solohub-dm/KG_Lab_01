@@ -32,7 +32,7 @@ class Point {
         return new Point(this.x - vec.x * len, this.y - vec.y * len)
     }
     cpy () {
-        return new Point (this.x, this.y);
+        return new Point(this.x, this.y);
     }
 }
 

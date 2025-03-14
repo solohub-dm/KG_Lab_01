@@ -24,14 +24,17 @@ canvasMainStep.addEventListener('keydown', function(event) {
 let maxDivsCnt = 100;
 let divsCnt;
 let midl;
-let step;
+let stepM;
+
+let sizeM = 500;
+let offs;
 
 const ctx = canvasMain?.getContext("2d");
 // Функція малювання координатної системи
 function drawSystem() {
 
-    canvasMain.width = 500;
-    canvasMain.height = 500;
+    canvasMain.width = sizeM;
+    canvasMain.height = sizeM;
 
     ctx.clearRect(0, 0, canvasMain.width, canvasMain.height);
 
@@ -45,15 +48,15 @@ function drawSystem() {
     divsCnt = value;
     const divs = value + 2;
     const size = width;
-    step = Math.floor(size / divs / 2);
-    const offs = Math.floor((size / 2) % step);
+    stepM = Math.floor(size / divs / 2);
+    offs = Math.floor((size / 2) % stepM);
 
     // Розмірна сітка
     ctx.strokeStyle = "rgb(196, 199, 206)";
     ctx.lineWidth = 1;
 
     if (value <= 45) {
-        for (let cur = offs + step; cur < size - offs; cur += step) {
+        for (let cur = offs + stepM; cur < size - offs; cur += stepM) {
             ctx.beginPath();
             ctx.moveTo(cur, 0);
             ctx.lineTo(cur, height);
@@ -69,16 +72,16 @@ function drawSystem() {
 
     midl = Math.floor(size / 2);
     ctx.beginPath();
-    ctx.moveTo(midl, step + offs);
-    ctx.lineTo(midl, height - step - offs);
-    ctx.moveTo(step + offs, midl);
-    ctx.lineTo(size - step - offs, midl);
+    ctx.moveTo(midl, stepM + offs);
+    ctx.lineTo(midl, height - stepM - offs);
+    ctx.moveTo(stepM + offs, midl);
+    ctx.lineTo(size - stepM - offs, midl);
     ctx.stroke();
 
     // Одиничні поділки на осях
     let markLen;
     if (value <= 20) 
-        markLen = Math.floor(step / 5);
+        markLen = Math.floor(stepM / 5);
     else 
         markLen = 2;
 
@@ -86,8 +89,8 @@ function drawSystem() {
         let markS = midl - markLen;
         let markE = midl + markLen;
 
-        // for (let cur = offs + step * 2; cur <= size - step * 2 - offs; cur += step) {
-        for (let cur = offs + step * 2; cur <= size - step * 2 - offs; cur += step) {
+        // for (let cur = offs + stepM * 2; cur <= size - stepM * 2 - offs; cur += stepM) {
+        for (let cur = offs + stepM * 2; cur <= size - stepM * 2 - offs; cur += stepM) {
             if (cur === midl) continue;
 
             ctx.beginPath();
@@ -114,7 +117,7 @@ function drawSystem() {
     let shrt;
     let long;
     if (value <= 20) {
-        let arrw = step / Math.sqrt(2);
+        let arrw = stepM / Math.sqrt(2);
         let degr = 15; 
         let rads = degr * (Math.PI / 180);
         shrt = arrw * Math.sin(rads);
@@ -125,12 +128,12 @@ function drawSystem() {
     }
 
     ctx.beginPath();
-    ctx.moveTo(midl - shrt, step + offs + long);
-    ctx.lineTo(midl, step + offs);
-    ctx.lineTo(midl + shrt, step + offs + long);
-    ctx.moveTo(size - step - offs - long, midl - shrt);
-    ctx.lineTo(size - step - offs, midl);
-    ctx.lineTo(size - step - offs - long, midl + shrt);
+    ctx.moveTo(midl - shrt, stepM + offs + long);
+    ctx.lineTo(midl, stepM + offs);
+    ctx.lineTo(midl + shrt, stepM + offs + long);
+    ctx.moveTo(size - stepM - offs - long, midl - shrt);
+    ctx.lineTo(size - stepM - offs, midl);
+    ctx.lineTo(size - stepM - offs - long, midl + shrt);
     ctx.stroke();   
 
 
@@ -139,11 +142,11 @@ function drawSystem() {
     ctx.font = "16px Arial";
 
     if (value <= 20) {
-    ctx.fillText("X", size - step - offs, midl - 8);
-    ctx.fillText("Y", midl + 12, step + offs + 4);
+    ctx.fillText("X", size - stepM - offs, midl - 8);
+    ctx.fillText("Y", midl + 12, stepM + offs + 4);
     } else {
-        ctx.fillText("X", size - step - offs - 8, midl - 10);
-        ctx.fillText("Y", midl + 13, step + offs + 15);
+        ctx.fillText("X", size - stepM - offs - 8, midl - 10);
+        ctx.fillText("Y", midl + 13, stepM + offs + 15);
     }
 
     if (value <= 20) {
@@ -155,15 +158,15 @@ function drawSystem() {
             ctx.font = "8px Arial";
 
         ctx.textAlign = "right";
-        // for (let num = 1, cur = midl - step; cur > step * 2 - offs; cur -= step, num++) {
-            for (let num = 1, cur = midl - step; num <= value; cur -= step, num++) {
+        // for (let num = 1, cur = midl - stepM; cur > stepM * 2 - offs; cur -= stepM, num++) {
+            for (let num = 1, cur = midl - stepM; num <= value; cur -= stepM, num++) {
             ctx.fillText(num, midl - 2 - markLen, cur + 3);
             // ctx.fillText(num, midl - 6, cur + 3);
         }
         ctx.textAlign = "center";
 
-        // for (let num = 1, cur = midl + step; cur <= size - step * 2 - offs; cur += step, num++) {
-        for (let num = 1, cur = midl + step; num <= value; cur += step, num++) {
+        // for (let num = 1, cur = midl + stepM; cur <= size - stepM * 2 - offs; cur += stepM, num++) {
+        for (let num = 1, cur = midl + stepM; num <= value; cur += stepM, num++) {
             ctx.fillText(num, cur, midl + markLen + 11  );
             // ctx.fillText(num, cur, midl + 13);
         }
@@ -175,7 +178,7 @@ function drawSystem() {
 
 // Функція переведення у координати канваса
 function cX(value) {
-    return midl + value * step; 
+    return midl + value * stepM; 
 }
 
 // Функція для малювання трапеції на канвасі

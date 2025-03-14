@@ -196,7 +196,9 @@ function checkHeight() {
             break;
         }
         if (trHeightLen.value.trim() === "") {
-            drawBasis();
+            console.log("trHeightLen.value.trim()");
+            if (isCorrectCoords)
+                drawBasis();
             break;
         }
         if (!isCorrectCoords) {
