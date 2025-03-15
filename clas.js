@@ -112,6 +112,7 @@ class Trapezium {
         this.dimens = undefined;
         this.vector = undefined;
         this.divElm = undefined;
+        this.isShow = true;
         this.inSyst = true;
         this.map = undefined;
     }

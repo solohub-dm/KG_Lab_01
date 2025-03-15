@@ -99,7 +99,7 @@ const trLengths = [
 ]
 addRestrict(trLengths, /^[0-9.]$/);
 
-
+const textErrorDivs  = getElement("#error-divs");
 const textErrorName  = getElement("#error-name");
 const textErrorCoords  = getElement("#error-coords");
 const textErrorLength  = getElement("#error-length");
@@ -107,12 +107,12 @@ const textErrorLength  = getElement("#error-length");
 const trErrors = [
     textErrorName,
     textErrorCoords,
-    textErrorLength
+    textErrorLength,
 ]
 
 // Функція відображення повідомлення про помилку
 function showErrorMessageCoords(errorMessage, input) {
-    console.log(errorMessage);
+    // console.log(errorMessage);
     canvasPreview.style.opacity = 0;
     canvasPreview.width = 0;
 
@@ -126,7 +126,7 @@ function showErrorMessageCoords(errorMessage, input) {
 }
 
 function showErrorMessageLength(errorMessage, input) {
-    console.log(errorMessage);
+    // console.log(errorMessage);
     canvasPreview.style.opacity = 0;
     canvasPreview.width = 0;
 
@@ -230,7 +230,7 @@ function checkHeight() {
             break;
         }
         if (trHeightLen.value.trim() === "") {
-            console.log("trHeightLen.value.trim()");
+            // console.log("trHeightLen.value.trim()");
             if (isCorrectCoords)
                 drawBasis();
             break;
@@ -407,7 +407,7 @@ function checkSmaller() {
             showErrorMessageLength(
                 "The smaller basis length exceeds the maximum allowed. " +
                 "The figure will not fit in the coordinate system. " +
-                "Max allowed length: " + roundTwoAfter(smallerLenMax - eps) + ".");
+                "Max allowed length: " + roundTwoAfter(smallerLenMax - eps) + ".", trSmallBasisLen);
             break;
         }
 
@@ -487,7 +487,7 @@ function clearForm() {
 
 let globalId = 0;
 function getNewId() {
-    console.log("globalId: " + globalId);
+    // console.log("globalId: " + globalId);
     return globalId++;
 }
 

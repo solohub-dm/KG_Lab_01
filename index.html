@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trapezium</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 </head>
@@ -27,14 +27,6 @@
             </div>
 
             <div class="control-main" id="control-main-properties">
-<!-- 
-                <div class="control-button rev" id="control-header-cancel">
-                    <p class="text-button">Clear form</p>
-                    <img src="./img/clear.png" alt="clear properties" class="icon-button">
-                </div>
-                <hr> -->
-
-
                 <div class="properties-panel">
                     <form id="form-properties">
                         <fieldset id="fieldset-student">
@@ -54,7 +46,6 @@
                                     <label><input type="checkbox" id="checkbox-line" checked>Line:</label>
                                     <input type="color" id="color-line">
                                 </div>
-
                             </div>
                             <br>
                             <p class="text-section-name">Larger basis vector:</p>
@@ -95,14 +86,7 @@
                             <p class="text-error" id="error-length"></p>
                           </fieldset>
                     </form>
-                    <!-- <div class="canvas-prewiev-panel"> -->
-                        <!-- <div class="error-panel" id="error-panel">
-                            <p class="text-error" id="text-error">Error text</p>
-                        </div> -->
-                        <canvas class="canvas-preview" id="canvas-preview">
-                    
-                        </canvas>
-                    <!-- </div> -->
+                    <canvas class="canvas-preview" id="canvas-preview"></canvas>
                 </div>
                 
                 <hr class="asd">
@@ -121,9 +105,12 @@
 
             </canvas>
             <div class="floating-div">
-                <label for="step-lenght" class="text-section-name">Divs:</label>
-                <input type="number" id="step-lenght" value="10">
-            </div> 
+                <p class="text-error" id="error-divs"></p>
+                <div class="step-div">
+                    <label for="step-lenght" class="text-section-name">Divs:</label>
+                    <input type="number" id="step-lenght" value="10">
+                </div> 
+            </div>
         </div>
     </div>
 </body>

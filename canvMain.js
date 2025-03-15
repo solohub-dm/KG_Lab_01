@@ -35,31 +35,64 @@ window.addEventListener("load", () => {
     trName.value = "Trapezium_" + (globalId + 1);
 });
 
-canvasMainStep.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
+function showErrorMessageDivs(errorMessage) {
+    console.log("showErrorMessageDivs");
+    isErrorDivs = true;
+    textErrorDivs.textContent = errorMessage;
+    canvasMainStep.style.backgroundColor = "rgb(239, 117, 117)";
+}
+
+function hideErrorMessageDivs() {
+    console.log("hideErrorMessageDivs");
+    canvasMainStep.style.backgroundColor = "rgb(255, 255, 255)";
+    textErrorDivs.textContent = "";
+    isErrorDivs = false;
+}
+
+let isErrorDivs = false;
+
+canvasMainStep.addEventListener("blur", function() {
+    if (canvasMainStep.value.trim() === "" || isErrorDivs) {
+        canvasMainStep.value = divsCnt;
+    }
+    if (isErrorDivs)
+        hideErrorMessageDivs();
+});
+
+let inputTimeout;
+canvasMainStep.addEventListener("input", function(event) {
+    // if (event.key === 'Enter') {
+    //     event.preventDefault();
+    clearTimeout(inputTimeout);
+    inputTimeout = setTimeout(() => {
         if (canvasMainStep.value.trim() === "" ||
             Number(canvasMainStep.value) === divsCnt) {
-            canvasMainStep.value = divsCnt;
+            if (isErrorDivs)
+                hideErrorMessageDivs();
             return;
         }
         const value = Number(canvasMainStep.value)
-        if (value <= 0)
-            alert("Value cannot be equal to zero.");
-        else if (value > maxDivsCnt) {
-            alert("Value cannot be greater than " + maxDivsCnt + ".");
-            canvasMainStep.value = divsCnt;
+        if (value <= 0) {
+            showErrorMessageDivs("Value cannot be equal to zero.")
+        } else if (value > maxDivsCnt) {
+            showErrorMessageDivs("Value cannot be greater than " + maxDivsCnt + ".")
         } else {
+            if (isErrorDivs)
+                hideErrorMessageDivs();
+
+            let divsCntBefore = divsCnt;
             drawSystem();
             checkCoords();
-            reDrawCanvasMain();
+            reDrawCanvasMain(divsCntBefore);
         }        
-    }
+    }, 150); 
+        
+    // }
 });
 addRestrict(canvasMainStep, /^[0-9]$/);
 
-function isInsideSystem(trap, divsCnt) {
-    console.log("isInsideSystem");
+function isInsideSystem(trap) {
+    // console.log("isInsideSystem");
     let { 
         lStartPoint: trP1, lEndPoint: trP2, 
         sStartPoint: trP3, sEndPoint: trP4 
@@ -71,27 +104,32 @@ function isInsideSystem(trap, divsCnt) {
 
 let textNoIn;
 let firstInSys = 0;
-function reDrawCanvasMain() {
+function reDrawCanvasMain(divsCntBefore) {
+    if (!trapeziums.length) return;
     console.log("reDrawCanvasMain");
-    let divsCntNew = Number(canvasMainStep.value);
     
     downOn(firstInSys);
-    let isLower = divsCntNew < divsCnt;
+    let isLower = divsCntBefore > divsCnt;
     console.log("isLower: " + isLower);
     firstInSys = isLower ? firstInSys : 0;
+    console.log("firstInSys: " + firstInSys);
+
     for (let i = firstInSys; i < trapeziums.length; i++) { 
         console.log(trapeziums[i].proper.name);
         console.log("inSyst before: " + trapeziums[i].inSyst);
         if (isLower) {
-            if (trapeziums[i].inSyst)
-                console.log("test isLower:");
-                trapeziums[i].inSyst = isInsideSystem(trapeziums[i], divsCntNew);
-        } else {
-            if (!trapeziums[i].inSyst)
-                console.log("test notIsLower:");
-                trapeziums[i].inSyst = isInsideSystem(trapeziums[i], divsCntNew);
-        }
+            // console.log("isLower");
 
+            if (trapeziums[i].inSyst)
+                // console.log("test isLower:");
+                trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
+        } else {
+            // console.log("notIsLower");
+
+            if (!trapeziums[i].inSyst)
+                // console.log("test notIsLower:");
+                trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
+        }
         console.log("inSyst after: " + trapeziums[i].inSyst);
     }
 
@@ -102,8 +140,13 @@ function reDrawCanvasMain() {
             layersElements.prepend(trapeziums[i].divElm);
             index++;
             controlOn(trapeziums[i].divElm);
-            draw(trapeziums[i]);
+            console.log("inSyst");
+            if (trapeziums[i].isShow) {
+                console.log("draw: " + trapeziums[i].inSyst);
+                draw(trapeziums[i]);    
+            }
         } else {
+            console.log("notInSyst");
             const referenceNode = layersElements.children[index];
             if (referenceNode) {
                 layersElements.insertBefore(trapeziums[i].divElm, referenceNode);
@@ -125,8 +168,8 @@ function reDrawCanvasMain() {
     for (let i = 0; i < trapeziums.length; i++) {
         if (trapeziums[i].inSyst) {
             firstInSys = i;
-            console.log("firstInSys: " + firstInSys);
-            console.log("firstInSys name: " + trapeziums[firstInSys].proper.name);
+            // console.log("firstInSys: " + firstInSys);
+            // console.log("firstInSys name: " + trapeziums[firstInSys].proper.name);
             downOff(firstInSys);
             break;
         }
@@ -134,11 +177,11 @@ function reDrawCanvasMain() {
  }
 
  function downOff(index) {
-    console.log("downOff");
+    // console.log("downOff");
     trapeziums[index].divElm.classList.add("no-down");
  } 
  function downOn(index) {
-    console.log("downOn");
+    // console.log("downOn");
     trapeziums[index].divElm.classList.remove("no-down");
  }
 
@@ -232,7 +275,6 @@ function drawSystem() {
         }   
     }
     
-
     // Точка на перетині осей
     ctx.beginPath();
     if (value <= 20) 

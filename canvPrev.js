@@ -20,7 +20,7 @@ function drawGrid(size, pad, step) {
 }
 
 function drawBasis() {
-    console.log("drawBasis");
+    // console.log("drawBasis");
 
     let size = new Point(
         canvasPreview.offsetWidth,
@@ -51,21 +51,18 @@ function drawBasis() {
 
     ePoint.x = trapez.coords.lEndPoint.x;
     ePoint.y = trapez.coords.lEndPoint.y;
-    
 
-    console.log(sPoint);
-    console.log(ePoint);
+    // console.log(sPoint);
+    // console.log(ePoint);
 
-    console.log(sPoint.x);
-    console.log(sPoint.y);
-    console.log(sPoint);
-    console.log(sPoint.x);
-    console.log(sPoint.y);
-    console.log(ePoint);
-    console.log(ePoint.x);
-    console.log(ePoint.y);
-
-    
+    // console.log(sPoint.x);
+    // console.log(sPoint.y);
+    // console.log(sPoint);
+    // console.log(sPoint.x);
+    // console.log(sPoint.y);
+    // console.log(ePoint);
+    // console.log(ePoint.x);
+    // console.log(ePoint.y);
 
     let sqPoint = minMaxPoint(sPoint, ePoint);
     
@@ -104,8 +101,8 @@ function drawBasis() {
     ctxPr.fillStyle = trapez.proper.colorLine;
     ctxPr.lineWidth = 2;
 
-    console.log("colorLine: " + trapez.proper.colorLine);
-    console.log("fillStyle: " + trapez.proper.colorFill);
+    // console.log("colorLine: " + trapez.proper.colorLine);
+    // console.log("fillStyle: " + trapez.proper.colorFill);
 
     ctxPr.beginPath();
     ctxPr.moveTo(sPoint.x, sPoint.y);
@@ -132,7 +129,7 @@ function drawBasis() {
 }
 
 function drawBasisHeight() {
-    console.log("drawBasisHeight");
+    // console.log("drawBasisHeight");
 
     let size = new Point(
         canvasPreview.offsetWidth,
@@ -188,7 +185,7 @@ function drawBasisHeight() {
     ctxPr.fillStyle = trapez.proper.colorFill;
     ctxPr.lineWidth = 2;
 
-    console.log("colorLine: " + trapez.proper.colorLine);
+    // console.log("colorLine: " + trapez.proper.colorLine);
 
     ctxPr.beginPath();
     ctxPr.moveTo(sPoint.x, sPoint.y);
@@ -202,7 +199,7 @@ function drawBasisHeight() {
 }
 
 function drawPreview() {
-    console.log("drawBasisHeight");
+    // console.log("drawBasisHeight");
 
     let size = new Point(
         canvasPreview.offsetWidth,
@@ -256,8 +253,8 @@ function drawPreview() {
     ctxPr.fillStyle = trapez.proper.colorFill;
     ctxPr.lineWidth = 4;
 
-    console.log("colorLine: " + trapez.proper.colorLine);
-    console.log("fillStyle: " + trapez.proper.colorFill);
+    // console.log("colorLine: " + trapez.proper.colorLine);
+    // console.log("fillStyle: " + trapez.proper.colorFill);
 
     ctxPr.beginPath();
     ctxPr.moveTo(ssPoint.x, ssPoint.y);
