@@ -7,7 +7,6 @@
 }
 
 .main-wrapper {
-    /* background-color: var(--darkblue-normal); */
     background-color: var(--darkblue-bright);
     width: 100vw;
     height: 100vh;
@@ -107,8 +106,8 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-    overflow-y: auto; /* Додає вертикальну прокрутку при необхідності */
-    overflow-x: hidden; /* Забороняє горизонтальну прокрутку */
+    overflow-y: auto; 
+    overflow-x: hidden;
     height: 600px;
     gap: 8px;
     padding: 16px 8px 8px;
@@ -400,15 +399,3 @@ hr {
     flex-direction: column;
     align-items: center;
 }
-
-/* .floating-div {
-    position: absolute;
-    top: 25px; 
-    left: calc(36vw - 50vh - 56px );
-    width: 56px;
-    height: 56px;
-    background-color: var(--darkblue-normal); 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */

@@ -1,8 +1,6 @@
 const getElement = document.querySelector.bind(document);
-//
-//  Елементи інтерфейсу
-//
 
+//  Елементи інтерфейсу
 const canvasPreview  = getElement("#canvas-preview");
 const canvasMain  = getElement("#canvas-main");
 const canvasMainStep  = getElement("#step-lenght");
@@ -21,9 +19,9 @@ const propertiesForm  = getElement("#form-properties");
 const propertiesClearBtn  = getElement("#control-header-cancel");
 const propertiesCreateBtn  = getElement("#control-header-create");
 
-let isLayersMode = false;
 
 // Зміна вікна програми
+let isLayersMode = false;
 windowBtn.addEventListener("click", changeWindow);
 function changeWindow() {
     if (isLayersMode)
@@ -38,13 +36,12 @@ function changeWindow() {
 
     isLayersMode = !isLayersMode;
 }
+
 // Зміна параметра відображення для елемента  
 function changeDisplay(item) {
     let currentDisplay = getComputedStyle(item).display;
     item.style.display = (currentDisplay === "none") ? "flex" : "none";
 }
-
-
 
 // Масив для збереження даних створених трапецій
 let trapeziums = [];
@@ -106,8 +103,6 @@ function createTrapezium() {
             trapeziums.push(newTrapez);
             draw(newTrapez);
             clearForm();
-            // console.log("Create");
-            // console.log(newTrapez);
         }
     }
 }
@@ -215,11 +210,8 @@ function showTrapezium(trapeziumElement, showButton) {
 }
 
 function clearTrapezuim(index) {
-    console.log("clearTrapezuim");
-    console.log("trap.isShow:" + trapeziums[index].isShow);
-    console.log("trap.inSyst:" + trapeziums[index].inSyst);
     if (!trapeziums[index].isShow || !trapeziums[index].inSyst) return;
-    console.log("clearTrapezuim after");
+
     let { 
         lStartPoint: lSTr, lEndPoint: lETr, 
         sStartPoint: sSTr, sEndPoint: sETr 
@@ -257,10 +249,8 @@ function clearTrapezuim(index) {
 
     for (let i = 0; i < trapeziums.length; i++) {
         if (i == index) continue;
-        if (tryTrapeziumsOverlap(trapeziums[i], rect)) {
-            // console.log("---draw: " + trapeziums[i].proper.name);
+        if (tryTrapeziumsOverlap(trapeziums[i], rect)) 
             draw(trapeziums[i]);
-        }
     }
 }
 
@@ -274,12 +264,9 @@ function deleteTrapezium(trapeziumElement) {
     if (!res) return;
 
     clearTrapezuim(index);
-    console.log("deleteTrapezium");
     if (index !== -1) {
         trapeziums.splice(index, 1); // Видалення з масиву
         trapeziumElement.remove(); // Видалення з DOM
-        console.log("firstInSys: " + firstInSys);
-        console.log("index: " + index);
         if (index === firstInSys) {
             if (index === trapeziums.length) {
                 // firstInSys = 0;
@@ -288,7 +275,6 @@ function deleteTrapezium(trapeziumElement) {
                     if (trapeziums[i].inSyst) {
                         firstInSys = i;
                         downOff(i);
-                        console.log("new firstInSys : " + firstInSys);
                         break;
                     }
                 }
@@ -299,20 +285,17 @@ function deleteTrapezium(trapeziumElement) {
 
 function reDrawTrapezium(index) {
     draw(trapeziums[index]);
-    // console.log("---draw: " + trapeziums[index].proper.name);
     for (let i = index + 1; i < trapeziums.length; i++) {
         if (tryTrapeziumsOverlap(
             trapeziums[i], 
             trapeziums[index]
         )) {
-            // console.log("---draw: " + trapeziums[i].proper.name);
             draw(trapeziums[i]);
         }
     }
 }
 
 function moveTrapeziumUp(trapeziumElement) {
-    // console.log("moveTrapeziumUp");
 
     const parent = trapeziumElement.parentElement;
     if (!parent || !trapeziumElement.previousElementSibling) return;
@@ -327,7 +310,6 @@ function moveTrapeziumUp(trapeziumElement) {
     }
     if (index < trapeziums.length - 1) {        
         [trapeziums[index], trapeziums[index + 1]] = [trapeziums[index + 1], trapeziums[index]];
-        // [trapeziums[index], trapeziums[index - 1]] = [trapeziums[index - 1], trapeziums[index]];
 
         if (tryTrapeziumsOverlap(
             trapeziums[index], 
@@ -339,14 +321,10 @@ function moveTrapeziumUp(trapeziumElement) {
 }
 
 function moveTrapeziumDown(trapeziumElement) {
-    // console.log("moveTrapeziumDown");
-
     const parent = trapeziumElement.parentElement;
     if (!parent || !trapeziumElement.nextElementSibling) return;
 
     // Поміняти місцями у DOM
-    // parent.insertBefore(trapeziumElement.nextElementSibling, trapeziumElement);
-
     parent.insertBefore(trapeziumElement.nextElementSibling, trapeziumElement);
     parent.insertBefore(trapeziumElement, trapeziumElement.nextElementSibling);     
     // Оновити масив
@@ -356,7 +334,7 @@ function moveTrapeziumDown(trapeziumElement) {
         downOn(index - 1);
     }
     if (index > 0) {
-        // [trapeziums[index], trapeziums[index + 1]] = [trapeziums[index + 1], trapeziums[index]];
+
         [trapeziums[index], trapeziums[index - 1]] = [trapeziums[index - 1], trapeziums[index]];
 
         if (tryTrapeziumsOverlap(
@@ -438,37 +416,21 @@ function isPointInsideTrapezium(point, pTr) {
 
 function tryTrapeziumsOverlap(trap1, trap2) {
     let isOverlap = false;
-    console.log("tryTrapeziumsOverlap");
-    // console.log(trap1.proper.name + " " + trap1.proper.id);
-    // if (trap2.proper)
-    //     console.log(trap2.proper.name + " " + trap2.proper.id);
-    // else 
-    //     console.log("second no trap");
-    console.log("trap1.isShow:" + trap1.isShow)
-    console.log("trap1.inSyst:" + trap1.inSyst)
+
     if (!trap1.isShow || !trap1.inSyst) return false;
-    if (trap2.proper) {
-        console.log("trap2.isShow:" + trap2.isShow)
-        console.log("trap2.inSyst:" + trap2.inSyst)
+    if (trap2.proper)
         if (!trap2.isShow || !trap2.inSyst) return false;
-    }
-
-    console.log("tryTrapeziumsOverlap after");
 
     if (trap2.proper) {
-        // console.log("tryMap");
         if (trap1.map.has(trap2.proper.id)) {
-            // console.log("succes");
             isOverlap = trap1.map.get(trap2.proper.id);
         } else {
-            // console.log("error");
             isOverlap = trapeziumsOverlap(trap1.coords, trap2.coords);
-    
+
             trap1.map.set(trap2.proper.id, isOverlap);
             trap2.map.set(trap1.proper.id, isOverlap);
         }
     } else {
-        // console.log("noMap");
         isOverlap = trapeziumsOverlap(trap1.coords, trap2);
     }
 
@@ -505,20 +467,15 @@ function trapeziumsOverlap(trap1, trap2) {
         [sETr2, lSTr2]
     ];
 
-    for (let [p1, p2] of eTr1) {
-        for (let [q1, q2] of eTr2) {
-            if (segmentsIntersect(p1, p2, q1, q2)) {
+    for (let [p1, p2] of eTr1) 
+        for (let [q1, q2] of eTr2) 
+            if (segmentsIntersect(p1, p2, q1, q2)) 
                 return true;
-            }
-        }
-    }
 
     // Перевіряємо, чи одна трапеція повністю всередині іншої
     if (pTr1.some(p => isPointInsideTrapezium(p, pTr2)) ||
-        pTr2.some(p => isPointInsideTrapezium(p, pTr1))) {
-        
+        pTr2.some(p => isPointInsideTrapezium(p, pTr1))) 
         return true;
-    }
 
     return false;
 }

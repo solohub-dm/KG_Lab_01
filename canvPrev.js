@@ -20,7 +20,6 @@ function drawGrid(size, pad, step) {
 }
 
 function drawBasis() {
-    // console.log("drawBasis");
 
     let size = new Point(
         canvasPreview.offsetWidth,
@@ -30,41 +29,16 @@ function drawBasis() {
     canvasPreview.width = size.x;
     canvasPreview.height = size.y;
 
-    // let sPoint = trapez.getLStartPoint().cccpy();
-    // let ePoint = trapez.getLEndPoint().cccpy();
-
-    // console.log(trapez.getLStartPoint());
-    // console.log(trapez.getLStartPoint().cccpy());
-
-    // console.log(trapez.coords.lStartPoint);
-    // console.log(trapez.coords.lStartPoint.cccpy());
-
     let sPoint = new Point (
-        0, 0
+        trapez.coords.lStartPoint.x, 
+        trapez.coords.lStartPoint.y
     )
     let ePoint = new Point (
-      0, 0
+        trapez.coords.lEndPoint.x, 
+        trapez.coords.lEndPoint.y
     )
 
-    sPoint.x = trapez.coords.lStartPoint.x;
-    sPoint.y = trapez.coords.lStartPoint.y;
-
-    ePoint.x = trapez.coords.lEndPoint.x;
-    ePoint.y = trapez.coords.lEndPoint.y;
-
-    // console.log(sPoint);
-    // console.log(ePoint);
-
-    // console.log(sPoint.x);
-    // console.log(sPoint.y);
-    // console.log(sPoint);
-    // console.log(sPoint.x);
-    // console.log(sPoint.y);
-    // console.log(ePoint);
-    // console.log(ePoint.x);
-    // console.log(ePoint.y);
-
-    let sqPoint = minMaxPoint(sPoint, ePoint);
+    // let sqPoint = minMaxPoint(sPoint, ePoint);
     
     moveToStart(sPoint, ePoint);
     let offset = maxPoint(sPoint, ePoint);
@@ -101,9 +75,6 @@ function drawBasis() {
     ctxPr.fillStyle = trapez.proper.colorLine;
     ctxPr.lineWidth = 2;
 
-    // console.log("colorLine: " + trapez.proper.colorLine);
-    // console.log("fillStyle: " + trapez.proper.colorFill);
-
     ctxPr.beginPath();
     ctxPr.moveTo(sPoint.x, sPoint.y);
     ctxPr.lineTo(ePoint.x, ePoint.y);
@@ -129,8 +100,6 @@ function drawBasis() {
 }
 
 function drawBasisHeight() {
-    // console.log("drawBasisHeight");
-
     let size = new Point(
         canvasPreview.offsetWidth,
         canvasPreview.offsetHeight
@@ -139,8 +108,8 @@ function drawBasisHeight() {
     canvasPreview.width = size.x;
     canvasPreview.height = size.y;
 
-    let sPoint = trapez.getLStartPoint().cpy();
-    let ePoint = trapez.getLEndPoint().cpy();
+    let sPoint = trapez.getLStartPoint  ().cpy();
+    let ePoint = trapez.getLEndPoint    ().cpy();
 
     let vecH = trapez.getVecH();
     let vecV = trapez.getVecV();
@@ -150,7 +119,7 @@ function drawBasisHeight() {
     let mPoint = sPoint.midlVector(ePoint);
     let hPoint = mPoint.addVecMul(vecV, heightLen);
 
-    let sqPoint = minMaxPoint(sPoint, ePoint, hPoint);
+    // let sqPoint = minMaxPoint(sPoint, ePoint, hPoint);
 
     moveToStart(sPoint, ePoint, mPoint, hPoint);
     let offset = maxPoint(sPoint, ePoint, hPoint);
@@ -185,8 +154,6 @@ function drawBasisHeight() {
     ctxPr.fillStyle = trapez.proper.colorFill;
     ctxPr.lineWidth = 2;
 
-    // console.log("colorLine: " + trapez.proper.colorLine);
-
     ctxPr.beginPath();
     ctxPr.moveTo(sPoint.x, sPoint.y);
     ctxPr.lineTo(ePoint.x, ePoint.y);
@@ -199,7 +166,6 @@ function drawBasisHeight() {
 }
 
 function drawPreview() {
-    // console.log("drawBasisHeight");
 
     let size = new Point(
         canvasPreview.offsetWidth,
@@ -209,14 +175,14 @@ function drawPreview() {
     canvasPreview.width = size.x;
     canvasPreview.height = size.y;
 
-    let slPoint = trapez.getLStartPoint().cpy();
-    let elPoint = trapez.getLEndPoint().cpy();
-    let ssPoint = trapez.getSStartPoint().cpy();
-    let esPoint = trapez.getSEndPoint().cpy();
-    let h1Point = trapez.getH1Point().cpy();
-    let h2Point = trapez.getH2Point().cpy();
+    let slPoint = trapez.getLStartPoint ().cpy();
+    let elPoint = trapez.getLEndPoint   ().cpy();
+    let ssPoint = trapez.getSStartPoint ().cpy();
+    let esPoint = trapez.getSEndPoint   ().cpy();
+    let h1Point = trapez.getH1Point     ().cpy();
+    let h2Point = trapez.getH2Point     ().cpy();
 
-    let sqPoint = minMaxPoint(slPoint, elPoint, ssPoint, esPoint);
+    // let sqPoint = minMaxPoint(slPoint, elPoint, ssPoint, esPoint);
 
     moveToStart(slPoint, elPoint, ssPoint, esPoint, h1Point, h2Point);
     let offset = maxPoint(slPoint, elPoint, ssPoint, esPoint);
@@ -253,9 +219,6 @@ function drawPreview() {
     ctxPr.fillStyle = trapez.proper.colorFill;
     ctxPr.lineWidth = 4;
 
-    // console.log("colorLine: " + trapez.proper.colorLine);
-    // console.log("fillStyle: " + trapez.proper.colorFill);
-
     ctxPr.beginPath();
     ctxPr.moveTo(ssPoint.x, ssPoint.y);
     ctxPr.lineTo(slPoint.x, slPoint.y);
@@ -266,7 +229,6 @@ function drawPreview() {
 
     ctxPr.fill();
     ctxPr.lineWidth = 2;
-
 
     ctxPr.beginPath();
     ctxPr.moveTo(ssPoint.x, ssPoint.y);
@@ -326,18 +288,18 @@ function moveToStart(...points) {
     });
 }
 
+function toCanvasCoords(pad, step, height, ...points) {
+    points.forEach((point, index) => {
+        point.x = pad.x + point.x * step;
+        point.y = height - pad.y - point.y * step;
+    });
+}
+
 function maxPoint(...points) {
     let xMax = Math.max(...points.map(p => p.x));
     let yMax = Math.max(...points.map(p => p.y));
 
     return new Point(xMax, yMax);
-}
-
-function minPoint(...points) {
-    let xMin = Math.min(...points.map(p => p.x));
-    let yMin = Math.min(...points.map(p => p.y));
-
-    return new Point(xMin, xMin);
 }
 
 function minMaxPoint(...points) {
@@ -352,11 +314,4 @@ function maxMinPoint(...points) {
     let yMin = Math.min(...points.map(p => p.y));
 
     return new Point(xMax, yMin);
-}
-
-function toCanvasCoords(pad, step, height, ...points) {
-    points.forEach((point, index) => {
-        point.x = pad.x + point.x * step;
-        point.y = height - pad.y - point.y * step;
-    });
 }

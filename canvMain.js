@@ -36,14 +36,12 @@ window.addEventListener("load", () => {
 });
 
 function showErrorMessageDivs(errorMessage) {
-    console.log("showErrorMessageDivs");
     isErrorDivs = true;
     textErrorDivs.textContent = errorMessage;
     canvasMainStep.style.backgroundColor = "rgb(239, 117, 117)";
 }
 
 function hideErrorMessageDivs() {
-    console.log("hideErrorMessageDivs");
     canvasMainStep.style.backgroundColor = "rgb(255, 255, 255)";
     textErrorDivs.textContent = "";
     isErrorDivs = false;
@@ -61,8 +59,6 @@ canvasMainStep.addEventListener("blur", function() {
 
 let inputTimeout;
 canvasMainStep.addEventListener("input", function(event) {
-    // if (event.key === 'Enter') {
-    //     event.preventDefault();
     clearTimeout(inputTimeout);
     inputTimeout = setTimeout(() => {
         if (canvasMainStep.value.trim() === "" ||
@@ -86,13 +82,10 @@ canvasMainStep.addEventListener("input", function(event) {
             reDrawCanvasMain(divsCntBefore);
         }        
     }, 150); 
-        
-    // }
 });
 addRestrict(canvasMainStep, /^[0-9]$/);
 
 function isInsideSystem(trap) {
-    // console.log("isInsideSystem");
     let { 
         lStartPoint: trP1, lEndPoint: trP2, 
         sStartPoint: trP3, sEndPoint: trP4 
@@ -106,31 +99,18 @@ let textNoIn;
 let firstInSys = 0;
 function reDrawCanvasMain(divsCntBefore) {
     if (!trapeziums.length) return;
-    console.log("reDrawCanvasMain");
     
     downOn(firstInSys);
     let isLower = divsCntBefore > divsCnt;
-    console.log("isLower: " + isLower);
     firstInSys = isLower ? firstInSys : 0;
-    console.log("firstInSys: " + firstInSys);
 
     for (let i = firstInSys; i < trapeziums.length; i++) { 
-        console.log(trapeziums[i].proper.name);
-        console.log("inSyst before: " + trapeziums[i].inSyst);
-        if (isLower) {
-            // console.log("isLower");
-
+        if (isLower) 
             if (trapeziums[i].inSyst)
-                // console.log("test isLower:");
                 trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
-        } else {
-            // console.log("notIsLower");
-
+         else
             if (!trapeziums[i].inSyst)
-                // console.log("test notIsLower:");
                 trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
-        }
-        console.log("inSyst after: " + trapeziums[i].inSyst);
     }
 
     layersElements.innerHTML = "";
@@ -140,13 +120,9 @@ function reDrawCanvasMain(divsCntBefore) {
             layersElements.prepend(trapeziums[i].divElm);
             index++;
             controlOn(trapeziums[i].divElm);
-            console.log("inSyst");
-            if (trapeziums[i].isShow) {
-                console.log("draw: " + trapeziums[i].inSyst);
+            if (trapeziums[i].isShow) 
                 draw(trapeziums[i]);    
-            }
         } else {
-            console.log("notInSyst");
             const referenceNode = layersElements.children[index];
             if (referenceNode) {
                 layersElements.insertBefore(trapeziums[i].divElm, referenceNode);
@@ -168,8 +144,6 @@ function reDrawCanvasMain(divsCntBefore) {
     for (let i = 0; i < trapeziums.length; i++) {
         if (trapeziums[i].inSyst) {
             firstInSys = i;
-            // console.log("firstInSys: " + firstInSys);
-            // console.log("firstInSys name: " + trapeziums[firstInSys].proper.name);
             downOff(firstInSys);
             break;
         }
@@ -177,11 +151,9 @@ function reDrawCanvasMain(divsCntBefore) {
  }
 
  function downOff(index) {
-    // console.log("downOff");
     trapeziums[index].divElm.classList.add("no-down");
  } 
  function downOn(index) {
-    // console.log("downOn");
     trapeziums[index].divElm.classList.remove("no-down");
  }
 
@@ -262,7 +234,6 @@ function drawSystem() {
         let markS = midl - markLen;
         let markE = midl + markLen;
 
-        // for (let cur = offs + stepM * 2; cur <= size - stepM * 2 - offs; cur += stepM) {
         for (let cur = offs + stepM * 2; cur <= size - stepM * 2 - offs; cur += stepM) {
             if (cur === midl) continue;
 
@@ -330,19 +301,13 @@ function drawSystem() {
             ctx.font = "8px Arial";
 
         ctx.textAlign = "right";
-        // for (let num = 1, cur = midl - stepM; cur > stepM * 2 - offs; cur -= stepM, num++) {
-            for (let num = 1, cur = midl - stepM; num <= value; cur -= stepM, num++) {
+        for (let num = 1, cur = midl - stepM; num <= value; cur -= stepM, num++) 
             ctx.fillText(num, midl - 2 - markLen, cur + 3);
-            // ctx.fillText(num, midl - 6, cur + 3);
-        }
-        ctx.textAlign = "center";
 
-        // for (let num = 1, cur = midl + stepM; cur <= size - stepM * 2 - offs; cur += stepM, num++) {
-        for (let num = 1, cur = midl + stepM; num <= value; cur += stepM, num++) {
+        ctx.textAlign = "center";
+        for (let num = 1, cur = midl + stepM; num <= value; cur += stepM, num++)
             ctx.fillText(num, cur, midl + markLen + 11  );
-            // ctx.fillText(num, cur, midl + 13);
-        }
-    
+
         ctx.textAlign = "right";
         ctx.fillText(0, midl - 2 - markLen, midl + 13);
     }
@@ -382,7 +347,6 @@ function draw(tr) {
 
     
     let isInside = (tr.dimens.offset < divsCnt / 35 * 2);
-    // drawHSq(tr, tr.coords.h2Point, isInside);
     if (
         tr.dimens.offset > divsCnt / 35 * 2 && 
         divsCnt / 35 * 2 < tr.dimens.heightLen
@@ -390,13 +354,6 @@ function draw(tr) {
         drawHSq(tr, tr.coords.h2Point, isInside);
         drawHSq(tr, tr.coords.h1Point, false);
     }
-
-
-    // drawHSq(tr, tr.coords.h1Point, false);
-    // // let isInside = (tr.dimens.offset < divsCnt / 35 * 2);
-    // // drawHSq(tr, tr.coords.h2Point, isInside);
-    // if (tr.dimens.offset < divsCnt / 35 * 2)
-    //     drawHSq(tr, tr.coords.h2Point, isInside);
 }
 
 // Функція для малювання висоти трапеції на канвасі

@@ -112,30 +112,25 @@ const trErrors = [
 
 // Функція відображення повідомлення про помилку
 function showErrorMessageCoords(errorMessage, input) {
-    // console.log(errorMessage);
+
     canvasPreview.style.opacity = 0;
     canvasPreview.width = 0;
 
-    // errorPanel.style.display = "flex";
     textErrorCoords.textContent = errorMessage;
     textErrorLength.textContent = "";
 
-    if (input) {
+    if (input) 
         input.style.backgroundColor = "rgb(239, 117, 117)";
-    }
 }
 
 function showErrorMessageLength(errorMessage, input) {
-    // console.log(errorMessage);
     canvasPreview.style.opacity = 0;
     canvasPreview.width = 0;
 
-    // errorPanel.style.display = "flex";
     textErrorLength.textContent = errorMessage;
 
-    if (input) {
+    if (input) 
         input.style.backgroundColor = "rgb(239, 117, 117)";
-    }
 }
 // Функція для приховування повідомлення про помилку, якщо всі перевірки пройдено
 function tryHideErrorMessage() {
@@ -230,7 +225,6 @@ function checkHeight() {
             break;
         }
         if (trHeightLen.value.trim() === "") {
-            // console.log("trHeightLen.value.trim()");
             if (isCorrectCoords)
                 drawBasis();
             break;
@@ -448,7 +442,6 @@ function roundTwoAfter(val) {
 // Функція очищення форми
 propertiesClearBtn.addEventListener("click", clearForm);
 function clearForm() {
-    // propertiesForm.reset();
 
     isErrorCoords = false;
     isErrorHeight = false;
@@ -480,14 +473,11 @@ function clearForm() {
 
     canvasPreview.width = 0;
     canvasPreview.style.opacity = 1;
-    // errorPanel.style.display = "none";
 }
 
 // Функція для отримання унікального id
-
 let globalId = 0;
 function getNewId() {
-    // console.log("globalId: " + globalId);
     return globalId++;
 }
 

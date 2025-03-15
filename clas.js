@@ -116,8 +116,7 @@ class Trapezium {
         this.inSyst = true;
         this.map = undefined;
     }
-
-
+    
     setFirst(proper, coords) {
         this.coords = coords;
         this.proper = proper;
