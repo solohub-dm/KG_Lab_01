@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trapezium</title>
     <link rel="stylesheet" href="./styles.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 </head>
 <body>
     <div class="main-wrapper">
@@ -15,29 +17,8 @@
                 <img src="./img/list.png" alt="items list" class="icon-button" id="icon-list-item">
             </div>
             <div class="control-main" id="control-main-layers">
-                <div class="layers-panel">
-                    <div class="trapezium-item">
-                        <div class="trapezium-control-display">
-                            <img src="./img/up.png" alt="move up" class="icon-show-button arrow">
-                            <img src="./img/show.png" alt="show/hide" class="icon-show-button">
-                            <img src="./img/down.png" alt="move down" class="icon-show-button arrow"> 
-                        </div>
-                        <p class="text-trapezium-name">In progress...</p>
-                        <div class="trapezium-control-display">
-                            <img src="./img/delete.png" alt="delete trapezium" class="icon-show-button">
-                        </div>
-                    </div>
-                    <!-- <div class="trapezium-item">
-                        <div class="trapezium-control-display">
-                            <img src="./img/up.png" alt="move up" class="icon-show-button arrow">
-                            <img src="./img/show.png" alt="show/hide" class="icon-show-button">
-                            <img src="./img/down.png" alt="move down" class="icon-show-button arrow"> 
-                        </div>
-                        <p class="text-trapezium-name">Trapezium_02</p>
-                        <div class="trapezium-control-display">f
-                            <img src="./img/delete.png" alt="delete trapezium" class="icon-show-button">
-                        </div>
-                    </div> -->
+                <div class="layers-panel" id="layers-panel">
+    
                 </div>
                 <div class="control-button" id="control-delete-layers">
                     <p class="text-button">Delete all</p>

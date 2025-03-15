@@ -1,23 +1,153 @@
 
+const canvasSave = document.createElement("canvas");
+const ctxSave = canvasSave.getContext("2d");
+
 // Функція завантаження при відкритті сторінки
 window.addEventListener("load", () => {
+
+    textNoIn = document.createElement("p");
+    textNoIn.classList.add("text-no-in");
+    textNoIn.id = "text-no-in";
+    
+    // Створюємо перший <span> із символом стрілки вниз
+    const spanDown1 = document.createElement("span");
+    spanDown1.classList.add("down");
+    spanDown1.innerHTML = "&#9660;";
+    
+    // Створюємо <span> із текстом
+    const spanText = document.createElement("span");
+    spanText.classList.add("text");
+    spanText.textContent = "Not in system of coordinates";
+    
+    // Створюємо другий <span> із символом стрілки вниз
+    const spanDown2 = document.createElement("span");
+    spanDown2.classList.add("down");
+    spanDown2.innerHTML = "&#9660;";
+    
+    // Додаємо всі <span> до <p>
+    textNoIn.appendChild(spanDown1);
+    textNoIn.appendChild(spanText);
+    textNoIn.appendChild(spanDown2);
+
+    canvasSave.width = sizeM;
+    canvasSave.height = sizeM;
     drawSystem();
-    trName.value = "Trapezium";
+    trName.value = "Trapezium_" + (globalId + 1);
 });
+
 canvasMainStep.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
+        if (canvasMainStep.value.trim() === "" ||
+            Number(canvasMainStep.value) === divsCnt) {
+            canvasMainStep.value = divsCnt;
+            return;
+        }
         const value = Number(canvasMainStep.value)
         if (value <= 0)
-            alert("Value cannot be lower than 1.");
-        else if (value > maxDivsCnt)
+            alert("Value cannot be equal to zero.");
+        else if (value > maxDivsCnt) {
             alert("Value cannot be greater than " + maxDivsCnt + ".");
-        else {
+            canvasMainStep.value = divsCnt;
+        } else {
             drawSystem();
             checkCoords();
+            reDrawCanvasMain();
         }        
     }
 });
+addRestrict(canvasMainStep, /^[0-9]$/);
+
+function isInsideSystem(trap, divsCnt) {
+    console.log("isInsideSystem");
+    let { 
+        lStartPoint: trP1, lEndPoint: trP2, 
+        sStartPoint: trP3, sEndPoint: trP4 
+    } = trap.coords;
+    let trP = [trP1, trP2, trP3, trP4];
+
+    return !trP.some((point) => !point.isInRangeAbs(divsCnt));
+}
+
+let textNoIn;
+let firstInSys = 0;
+function reDrawCanvasMain() {
+    console.log("reDrawCanvasMain");
+    let divsCntNew = Number(canvasMainStep.value);
+    
+    downOn(firstInSys);
+    let isLower = divsCntNew < divsCnt;
+    console.log("isLower: " + isLower);
+    firstInSys = isLower ? firstInSys : 0;
+    for (let i = firstInSys; i < trapeziums.length; i++) { 
+        console.log(trapeziums[i].proper.name);
+        console.log("inSyst before: " + trapeziums[i].inSyst);
+        if (isLower) {
+            if (trapeziums[i].inSyst)
+                console.log("test isLower:");
+                trapeziums[i].inSyst = isInsideSystem(trapeziums[i], divsCntNew);
+        } else {
+            if (!trapeziums[i].inSyst)
+                console.log("test notIsLower:");
+                trapeziums[i].inSyst = isInsideSystem(trapeziums[i], divsCntNew);
+        }
+
+        console.log("inSyst after: " + trapeziums[i].inSyst);
+    }
+
+    layersElements.innerHTML = "";
+    let index = 0;
+    for (let i = 0; i < trapeziums.length; i++) {
+        if (trapeziums[i].inSyst) {
+            layersElements.prepend(trapeziums[i].divElm);
+            index++;
+            controlOn(trapeziums[i].divElm);
+            draw(trapeziums[i]);
+        } else {
+            const referenceNode = layersElements.children[index];
+            if (referenceNode) {
+                layersElements.insertBefore(trapeziums[i].divElm, referenceNode);
+            } else {
+                layersElements.append(trapeziums[i].divElm)
+            }
+            controlOff(trapeziums[i].divElm);
+        }
+    }
+
+    const referenceNode = layersElements.children[index];
+    if (referenceNode) {
+        layersElements.insertBefore(textNoIn, referenceNode);
+        textNoIn.style.display = "block";
+    } else {
+        textNoIn.style.display = "none";
+    }
+
+    for (let i = 0; i < trapeziums.length; i++) {
+        if (trapeziums[i].inSyst) {
+            firstInSys = i;
+            console.log("firstInSys: " + firstInSys);
+            console.log("firstInSys name: " + trapeziums[firstInSys].proper.name);
+            downOff(firstInSys);
+            break;
+        }
+    }
+ }
+
+ function downOff(index) {
+    console.log("downOff");
+    trapeziums[index].divElm.classList.add("no-down");
+ } 
+ function downOn(index) {
+    console.log("downOn");
+    trapeziums[index].divElm.classList.remove("no-down");
+ }
+
+ function controlOff(div) {
+    div.classList.add("non-active");
+ }
+ function controlOn(div) {
+    div.classList.remove("non-active");
+ }
 
 
 // Змінні для налаштування декартової системи на канвасі
@@ -174,6 +304,9 @@ function drawSystem() {
         ctx.textAlign = "right";
         ctx.fillText(0, midl - 2 - markLen, midl + 13);
     }
+
+    ctxSave.clearRect(0, 0, sizeM, sizeM);
+    ctxSave.drawImage(canvasMain, 0, 0);
 }
 
 // Функція переведення у координати канваса

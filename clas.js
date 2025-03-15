@@ -34,6 +34,22 @@ class Point {
     cpy () {
         return new Point(this.x, this.y);
     }
+
+    cccpy () {
+        return new Point(this.x, this.y);
+    }
+}
+
+class Rectangle {
+    constructor (
+        lStartPoint, lEndPoint,
+        sStartPoint, sEndPoint
+    ) {
+        this.lStartPoint = lStartPoint;  
+        this.lEndPoint = lEndPoint; 
+        this.sStartPoint = sStartPoint; 
+        this.sEndPoint = sEndPoint; 
+    }
 }
 
 class Coords {
@@ -57,6 +73,7 @@ class Properties {
     ) {
         this.colorFill = colorFill;
         this.colorLine = colorLine;
+        this.name = undefined;
         this.id = undefined;
     }
 }
@@ -94,6 +111,9 @@ class Trapezium {
         this.proper = undefined;
         this.dimens = undefined;
         this.vector = undefined;
+        this.divElm = undefined;
+        this.inSyst = true;
+        this.map = undefined;
     }
 
 

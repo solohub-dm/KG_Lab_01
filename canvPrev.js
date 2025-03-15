@@ -2,7 +2,7 @@ const ctxPr = canvasPreview?.getContext("2d");
 
 function drawGrid(size, pad, step) {
     ctxPr.strokeStyle = "rgb(196, 199, 206)";
-    ctxPr.lineWidth = 1;
+    ctxPr.lineWidth = 2;
 
     for (let cur = (size.x - pad.x) % step; cur < size.x; cur += step) {
         ctxPr.beginPath();
@@ -30,8 +30,42 @@ function drawBasis() {
     canvasPreview.width = size.x;
     canvasPreview.height = size.y;
 
-    let sPoint = trapez.getLStartPoint().cpy();
-    let ePoint = trapez.getLEndPoint().cpy();
+    // let sPoint = trapez.getLStartPoint().cccpy();
+    // let ePoint = trapez.getLEndPoint().cccpy();
+
+    // console.log(trapez.getLStartPoint());
+    // console.log(trapez.getLStartPoint().cccpy());
+
+    // console.log(trapez.coords.lStartPoint);
+    // console.log(trapez.coords.lStartPoint.cccpy());
+
+    let sPoint = new Point (
+        0, 0
+    )
+    let ePoint = new Point (
+      0, 0
+    )
+
+    sPoint.x = trapez.coords.lStartPoint.x;
+    sPoint.y = trapez.coords.lStartPoint.y;
+
+    ePoint.x = trapez.coords.lEndPoint.x;
+    ePoint.y = trapez.coords.lEndPoint.y;
+    
+
+    console.log(sPoint);
+    console.log(ePoint);
+
+    console.log(sPoint.x);
+    console.log(sPoint.y);
+    console.log(sPoint);
+    console.log(sPoint.x);
+    console.log(sPoint.y);
+    console.log(ePoint);
+    console.log(ePoint.x);
+    console.log(ePoint.y);
+
+    
 
     let sqPoint = minMaxPoint(sPoint, ePoint);
     
@@ -50,21 +84,21 @@ function drawBasis() {
         sPoint, ePoint
     )
 
-    // drawGrid(size, pad, step);
+    drawGrid(size, pad, step);
 
-    let mul = stepM / step;
-    let padM  = new Point (
-        pad.x * mul,    
-        pad.y * mul    
-    ); 
-    ctxPr.drawImage(
-        canvasMain, 
-        cX(sqPoint.x) - padM.x, 
-        cX(-sqPoint.y) - padM.y, 
-        offset.x * stepM + padM.x * 2, 
-        offset.y * stepM  + padM.y * 2, 
+    // let mul = stepM / step;
+    // let padM  = new Point (
+    //     pad.x * mul,    
+    //     pad.y * mul    
+    // ); 
+    // ctxPr.drawImage(
+    //     canvasMain, 
+    //     cX(sqPoint.x) - padM.x, 
+    //     cX(-sqPoint.y) - padM.y, 
+    //     offset.x * stepM + padM.x * 2, 
+    //     offset.y * stepM  + padM.y * 2, 
         
-        0, 0, size.x, size.y);
+    //     0, 0, size.x, size.y);
 
     ctxPr.strokeStyle = trapez.proper.colorLine;
     ctxPr.fillStyle = trapez.proper.colorLine;
@@ -134,21 +168,21 @@ function drawBasisHeight() {
         sPoint, ePoint, mPoint, hPoint
     );
 
-    // drawGrid(size, pad, step);
+    drawGrid(size, pad, step);
 
-    let mul = stepM / step;
-    let padM  = new Point (
-        pad.x * mul,    
-        pad.y * mul    
-    ); 
-    ctxPr.drawImage(
-        canvasMain, 
-        cX(sqPoint.x) - padM.x, 
-        cX(-sqPoint.y) - padM.y, 
-        offset.x * stepM + padM.x * 2, 
-        offset.y * stepM  + padM.y * 2, 
+    // let mul = stepM / step;
+    // let padM  = new Point (
+    //     pad.x * mul,    
+    //     pad.y * mul    
+    // ); 
+    // ctxPr.drawImage(
+    //     canvasMain, 
+    //     cX(sqPoint.x) - padM.x, 
+    //     cX(-sqPoint.y) - padM.y, 
+    //     offset.x * stepM + padM.x * 2, 
+    //     offset.y * stepM  + padM.y * 2, 
         
-        0, 0, size.x, size.y);
+    //     0, 0, size.x, size.y);
 
     ctxPr.strokeStyle = trapez.proper.colorLine;
     ctxPr.fillStyle = trapez.proper.colorFill;
@@ -200,21 +234,21 @@ function drawPreview() {
         slPoint, elPoint, ssPoint, esPoint, h1Point, h2Point
     );
 
-    // drawGrid(size, pad, step);
+    drawGrid(size, pad, step);
 
-    let mul = stepM / step;
-    let padM  = new Point (
-        pad.x * mul,    
-        pad.y * mul    
-    ); 
-    ctxPr.drawImage(
-        canvasMain, 
-        cX(sqPoint.x) - padM.x, 
-        cX(-sqPoint.y) - padM.y, 
-        offset.x * stepM + padM.x * 2, 
-        offset.y * stepM  + padM.y * 2, 
+    // let mul = stepM / step;
+    // let padM  = new Point (
+    //     pad.x * mul,    
+    //     pad.y * mul    
+    // ); 
+    // ctxPr.drawImage(
+    //     canvasMain, 
+    //     cX(sqPoint.x) - padM.x, 
+    //     cX(-sqPoint.y) - padM.y, 
+    //     offset.x * stepM + padM.x * 2, 
+    //     offset.y * stepM  + padM.y * 2, 
         
-        0, 0, size.x, size.y);
+    //     0, 0, size.x, size.y);
 
     let off = slPoint.distanceTo(h1Point);
 
@@ -302,11 +336,25 @@ function maxPoint(...points) {
     return new Point(xMax, yMax);
 }
 
+function minPoint(...points) {
+    let xMin = Math.min(...points.map(p => p.x));
+    let yMin = Math.min(...points.map(p => p.y));
+
+    return new Point(xMin, xMin);
+}
+
 function minMaxPoint(...points) {
     let xMin = Math.min(...points.map(p => p.x));
     let yMax = Math.max(...points.map(p => p.y));
 
     return new Point(xMin, yMax);
+}
+
+function maxMinPoint(...points) {
+    let xMax = Math.max(...points.map(p => p.x));
+    let yMin = Math.min(...points.map(p => p.y));
+
+    return new Point(xMax, yMin);
 }
 
 function toCanvasCoords(pad, step, height, ...points) {

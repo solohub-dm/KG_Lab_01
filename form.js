@@ -1,4 +1,4 @@
-let eps = 0.1;
+let eps = 0.05;
 const trName  = getElement("#trapezium-name");
 
 const trColorsCbx = [
@@ -36,6 +36,27 @@ trColorsCbx[1].addEventListener("change", () => {
     reViewLine();
 });
 
+function addRestrict(input, reg) {
+
+    let inputs = Array.isArray(input) ? input : [input];
+
+    inputs.forEach(input => {
+        input.addEventListener("keypress", (event) => {
+            if (!reg.test(event.key)) {
+                event.preventDefault();
+            }
+        });
+
+        input.addEventListener("paste", (event) => {
+            let pasteData = event.clipboardData.getData("text");
+            if (!reg.test(pasteData)) {
+                event.preventDefault();
+            }
+        });
+    });
+}
+
+
 function reViewFill() {
     if(isCorrectCoords && isCorrectHeight && isCorrectBasisLen) {
         trapez.proper.colorFill = trColorsCbx[0].checked ? trColors[0].value : "transparent";
@@ -67,13 +88,27 @@ trCoords.forEach(input => {
         checkCoords(input);
     });
 });
+addRestrict(trCoords, /^[0-9.-]$/);
 
 const trHeightLen  = getElement("#height-lenght");
 const trSmallBasisLen  = getElement("#smaller-basis-lenght");
 
+const trLengths = [
+    trHeightLen,
+    trSmallBasisLen
+]
+addRestrict(trLengths, /^[0-9.]$/);
+
+
 const textErrorName  = getElement("#error-name");
 const textErrorCoords  = getElement("#error-coords");
 const textErrorLength  = getElement("#error-length");
+
+const trErrors = [
+    textErrorName,
+    textErrorCoords,
+    textErrorLength
+]
 
 // Функція відображення повідомлення про помилку
 function showErrorMessageCoords(errorMessage, input) {
@@ -138,8 +173,7 @@ function checkCoords(input) {
             trapez.setFirst (
                 new Properties (
                     trColorsCbx[0].checked ? trColors[0].value : "transparent", 
-                    trColorsCbx[1].checked ? trColors[1].value : "transparent",
-                    getNewId()
+                    trColorsCbx[1].checked ? trColors[1].value : "transparent"
                 ),
                 new Coords (
                     new Point(Number(trCoords[0].value), Number(trCoords[1].value)),
@@ -356,7 +390,7 @@ function checkSmaller() {
             }
             break;
         }
-
+        
         let smallerLen = Number(trSmallBasisLen.value);
         let len = trapez.getLargerLen();
         let smallerLenMax = trapez.getSmallerLenMax();
@@ -366,14 +400,14 @@ function checkSmaller() {
             break;
         }
         if (smallerLen >= len) {
-            showErrorMessageLength("Smaller basis lenght must be lower than larger one. Max allowed value: " + roundTwoAfter(len) + ".", trSmallBasisLen);
+            showErrorMessageLength("Smaller basis lenght must be lower than larger one. Max allowed value: " + roundTwoAfter(len - eps) + ".", trSmallBasisLen);
             break;
         }
         if (smallerLen > smallerLenMax) {
             showErrorMessageLength(
                 "The smaller basis length exceeds the maximum allowed. " +
                 "The figure will not fit in the coordinate system. " +
-                "Max allowed length: " + roundTwoAfter(smallerLenMax) + ".", trSmallBasisLen);
+                "Max allowed length: " + roundTwoAfter(smallerLenMax - eps) + ".");
             break;
         }
 
@@ -415,27 +449,46 @@ function roundTwoAfter(val) {
 propertiesClearBtn.addEventListener("click", clearForm);
 function clearForm() {
     // propertiesForm.reset();
+
+    isErrorCoords = false;
+    isErrorHeight = false;
+    isErrorBasisLen = false;
+
+    isCorrectCoords = false;
+    isCorrectHeight = false;
+    isCorrectBasisLen = false;
+
     trColorsCbx[0].checked = true;
     trColorsCbx[1].checked = true;
-    const textInputs = document.querySelectorAll('input[type="text"], input[type="number"]');
-    textInputs.forEach(input => {
-        input.style.backgroundColor = "white";
+    trColors[0].value = "#000000";
+    trColors[1].value =  "#000000";
+    trCoords.forEach(input => {
+        input.style.backgroundColor = "white"; // Змінює фон
+        input.value = ""; // Очищує поле вводу
+    });
+    trLengths.forEach(input => {
+        input.style.backgroundColor = "white"; // Змінює фон
+        input.value = ""; // Очищує поле вводу
+    });
+    trErrors.forEach(input => {
         input.textContent = "";
     });
+    
     trapez = new Trapezium();
-    trName.value = "Trapezium";
+    trName.value = ("Trapezium_" + (globalId + 1));
     
 
     canvasPreview.width = 0;
     canvasPreview.style.opacity = 1;
-    errorPanel.style.display = "none";
+    // errorPanel.style.display = "none";
 }
 
 // Функція для отримання унікального id
 
 let globalId = 0;
 function getNewId() {
-    return ++globalId;
+    console.log("globalId: " + globalId);
+    return globalId++;
 }
 
 trName.addEventListener("change", () => {
