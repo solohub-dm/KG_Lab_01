@@ -98,19 +98,19 @@ let textNoIn;
 let firstInSys = 0;
 function reDrawCanvasMain(divsCntBefore) {
   if (!trapeziums.length) return;
-
+  console.log("reDrawCanvasMain");
   downOn(firstInSys);
   let isLower = divsCntBefore > divsCnt;
   firstInSys = isLower ? firstInSys : 0;
 
   for (let i = firstInSys; i < trapeziums.length; i++) {
-    if (isLower)
-      if (trapeziums[i].inSyst)
-        trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
-      else if (!trapeziums[i].inSyst)
-        trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
+    if (isLower && trapeziums[i].inSyst) {
+      trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
+    } else if (!trapeziums[i].inSyst) {
+      trapeziums[i].inSyst = isInsideSystem(trapeziums[i]);
+    }
+    console.log(trapeziums[i].proper.name + ": " + trapeziums[i].inSyst);
   }
-
   layersElements.innerHTML = "";
   let index = 0;
   for (let i = 0; i < trapeziums.length; i++) {
@@ -190,20 +190,10 @@ function drawSystem() {
   const divs = value + 2;
   const size = width;
 
-  console.log("size: " + size);
-
-  console.log("divsCnt: " + divsCnt);
-  console.log("divs: " + divs);
-
   stepM = Math.floor(size / divs / 2);
-  console.log("stepM: " + stepM);
   let divsV = Math.ceil(minDivsStep / stepM);
-  console.log("divsV: " + divsV);
-  console.log("value / divsV: " + (value / divsV));
   let stepD = Math.floor(size / (Math.ceil(value / divsV) + 2) / 2);
-  console.log("stepD: " + stepD);
   if (stepD % 2) stepD--; 
-  console.log("stepD: " + stepD);
 
   stepM = stepD / divsV;
   

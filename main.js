@@ -101,7 +101,7 @@ function createTrapezium() {
       createTrapeziumDiv(newTrapez);
       trapeziums.push(newTrapez);
       draw(newTrapez);
-      clearForm();
+      // clearForm();
     }
   }
 }

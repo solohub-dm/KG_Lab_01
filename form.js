@@ -401,8 +401,8 @@ function checkSmaller() {
     }
     if (smallerLen >= len) {
       showErrorMessageLength(
-        "Smaller basis lenght must be lower than larger one. Max allowed value: " +
-          roundTwoAfter(len - eps) +
+        "Smaller basis lenght must be lower than larger one. Value must be lower than: " +
+          roundTwoAfter(len) +
           ".",
         trSmallBasisLen
       );
@@ -412,8 +412,8 @@ function checkSmaller() {
       showErrorMessageLength(
         "The smaller basis length exceeds the maximum allowed. " +
           "The figure will not fit in the coordinate system. " +
-          "Max allowed length: " +
-          roundTwoAfter(smallerLenMax - eps) +
+          "Value must be lower than: " +
+          roundTwoAfter(smallerLenMax) +
           ".",
         trSmallBasisLen
       );
